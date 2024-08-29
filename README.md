@@ -1,6 +1,6 @@
 # Browser Script Repository
 
-### Recommended to use [violentmonkey](https://violentmonkey.github.io/get-it/) to install the script.
+### Recommended to use [Violentmonkey](https://violentmonkey.github.io/get-it/) to install the script.
 
 ##  Directory
 - [github1s](github1s.user.js): Displays a quick jump button for Github1s at the top of the Github website   
