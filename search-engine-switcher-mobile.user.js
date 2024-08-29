@@ -121,16 +121,16 @@ const urlMapping = [
 
 // 根据参数名获取URL中的参数值
 function getQueryVariable(variable) {
-  let query = window.location.search.substring(1);
-  let vars = query.split("&");
-  for (let varPair of vars) {
-    let [key, value] = varPair.split("=");
-    if (key === variable) {
-      // 对提取出的参数值进行URI解码
-      return decodeURI(decodeURIComponent(value));
+  var query = window.location.search.substring(1);
+  var vars = query.split("&");
+  for (var i = 0; i < vars.length; i++) {
+    var pair = vars[i].split("=");
+    if (pair[0] == variable) {
+      // 对提取出的参数值进行URI解码并用空格替换加号
+      return decodeURIComponent(pair[1].replace(/\+/g, " "));
     }
   }
-  return null;
+  return false;
 }
 
 // 从当前URL中提取搜索关键词
