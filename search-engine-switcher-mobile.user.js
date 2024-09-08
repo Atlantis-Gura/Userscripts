@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         搜索引擎切换器 · 改二（移动端）
-// @version      1.3.1
+// @version      1.3.2
 // @description  用于快速切换搜索引擎。有漂亮的高斯模糊外观和深色模式适配。当您滚动网页时，侧栏会自动收起，而当鼠标靠近时，侧栏则会弹出。您可以修改脚本以添加或重新排序搜索引擎。
 // @author       Atlantis-Gura
 // @originAuthor shunz, Corlius
@@ -205,14 +205,27 @@ function setupSearchLinks(keywords) {
     isDarkMode = true; // 强制深色模式
   }
 
-  // 创建主容器
+  // 创建一个固定位置的包装器
+  const wrapper = document.createElement("div");
+  wrapper.id = "search-app-wrapper";
+  Object.assign(wrapper.style, {
+    position: "fixed",
+    top: "0",
+    left: "0",
+    width: "0",
+    height: "100%",
+    zIndex: "9999",
+    pointerEvents: "none",
+  });
+
+  // 修改主容器的样式
   const mainDiv = document.createElement("div");
   mainDiv.id = "search-app-box";
   Object.assign(mainDiv.style, {
-    position: "fixed",
+    position: "absolute",
     top: "50%",
     transform: "translateY(-50%)",
-    left: "-100px", // 初始位置在左侧外部
+    left: "-100px",
     width: "115px",
     fontSize: "13px",
     fontFamily: "sans-serif",
@@ -220,29 +233,37 @@ function setupSearchLinks(keywords) {
     backdropFilter: "blur(10px)",
     webkitBackdropFilter: "blur(10px)",
     borderRadius: "0 15px 15px 0",
-    zIndex: "9999",
     transition: "left 0.5s ease-in-out",
     cursor: "pointer",
     boxShadow: "0 8px 10px rgba(0,0,0,0.06)",
     overflow: "hidden",
+    pointerEvents: "auto",
   });
 
-  // 创建透明触发区域
+  // 将主容器添加到包装器中
+  wrapper.appendChild(mainDiv);
+
+  // 修改触发区域的位置
   const triggerDiv = document.createElement("div");
   triggerDiv.id = "search-app-trigger";
   Object.assign(triggerDiv.style, {
-    position: "fixed",
+    position: "absolute",
     top: "50%",
     transform: "translateY(-50%)",
     left: "0",
-    width: "50px", // 向右延伸50px
-    height: "400px", // 与主容器高度相同
+    width: "50px",
+    height: "400px",
     backgroundColor: "transparent",
-    zIndex: "9998", // 低于主容器的z-index
+    zIndex: "9998",
+    pointerEvents: "auto",
   });
 
-  document.body.appendChild(mainDiv);
-  document.body.appendChild(triggerDiv);
+  // 将触发区域也添加到包装器中
+  wrapper.appendChild(triggerDiv);
+
+  // 将包装器添加到 body
+  document.body.appendChild(wrapper);
+
 
   // 在搜索引擎链接前添加居中显示的标题"Engines"
   const enginesTitle = document.createElement('div');
